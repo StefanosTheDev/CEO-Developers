@@ -1,16 +1,21 @@
-// Goal of this function is to hit ZerBounce API Key Return The Appropiate Stuf
 const dotenv = require('dotenv');
 dotenv.config({ path: './config.env' }); // Load environment variables
+const fetch = require('node-fetch');
+const AppError = require('../error/AppError');
+exports.validateEmail = async (email) => {
+  const apiKey = process.env.HUNTER_KEY;
+  const url = `https://api.hunter.io/v2/email-verifier?email=${email}&api_key=${apiKey}`;
 
-exports.validateEmail = async () => {
-  // API Key
-  // API Name
-  const ZerBounceKey = process.env.ZEROBOUNCE_API_KEY_TOKEN;
-  const ZerBounceKeyName = process.env.ZEROBOUNCE_API_KEY_NAME;
-  const port = process.env.PORT || 3000;
-
-  console.log(ZerBounceKey);
-  console.log(ZerBounceKeyName);
-  console.log(port);
-  console.log('he');
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new AppError(`HTTP error! Status: ${response.status}`);
+  }
+  const data = await response.json();
+  if (data && data.data) {
+    console.log('Email verification response:', data.data);
+    return data.data; // Returns the result data
+  } else {
+    console.error('No data returned from API');
+    return null;
+  }
 };

@@ -1,5 +1,6 @@
 const AppError = require('../error/AppError');
 const utils = require('../utils/utils');
+const User = require('../models/userModel');
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
@@ -7,17 +8,20 @@ const signToken = (id) => {
 };
 
 const validateSignUp = async (username, email, password, role) => {
-  //   if (!username || typeof str !== 'string') {
-  //     throw new AppError('Name does not meet the parameter', 400);
-  //   }
-  if (!email || typeof str !== 'string') {
-    await utils.validateEmail(email);
+  if (!username || typeof username !== 'string') {
     throw new AppError('Name does not meet the parameter', 400);
   }
-  if (!password || typeof str !== 'string') {
+  // Deflect Prior To Hitting Token
+  if (!email || typeof email !== 'string') {
+    throw new AppError('Name does not meet the parameter', 400);
+  }
+  // Hit the ZeroBounce API NOW
+  await utils.validateEmail(email);
+
+  if (!password || typeof password !== 'string') {
     throw new AppError('Password Doesnt Exist');
   }
-  if (!role || typeof str !== 'string') {
+  if (!role || typeof role !== 'string') {
     throw new AppError('Role Doesnt exist');
   }
 };
