@@ -15,7 +15,7 @@ const validateSignUp = async (username, email, password, role) => {
   if (!email || typeof email !== 'string') {
     throw new AppError('Name does not meet the parameter', 400);
   }
-  // Hit the ZeroBounce API NOW
+  // Hit the HUNTER API NOW
   await utils.validateEmail(email);
 
   if (!password || typeof password !== 'string') {
