@@ -1,7 +1,2 @@
-const express = require('express');
-const router = express.Router();
-const userController = require('../controller/userController');
-
-router.route('/signup').post(authController.signup);
-router.route('/login').post(authController.login);
-module.exports = router;
+const userService = require('../service/userService');
+exports.getAllUsers = async (req, res, next) => {};

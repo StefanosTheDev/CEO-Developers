@@ -1,5 +1,5 @@
 const authService = require('../service/authService');
-module.exports.signup = async (req, res, next) => {
+exports.signup = async (req, res, next) => {
   try {
     const { username, email, password, role } = req.body;
     const user = await authService.signup({
@@ -20,7 +20,7 @@ module.exports.signup = async (req, res, next) => {
   }
 };
 
-module.exports.login = async (req, res, next) => {
+exports.login = async (req, res, next) => {
   const { email, password } = req.body;
   try {
     const { user, token } = await authService.login({ email, password });
@@ -37,4 +37,4 @@ module.exports.login = async (req, res, next) => {
     next(err);
   }
 };
-module.exports.resetPassword = async (req, res, next) => {};
+exports.resetPassword = async (req, res, next) => {};
