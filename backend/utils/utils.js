@@ -7,15 +7,16 @@ exports.validateEmail = async (email) => {
   const apiKey = process.env.HUNTER_KEY;
   const url = `https://api.hunter.io/v2/email-verifier?email=${email}&api_key=${apiKey}`;
   const response = await fetch(url);
-
+  console.log('here');
   // Check Response
   if (!response.ok) {
-    throw new AppError(`HTTP error! Status: ${response.status}`);
+    throw new AppError(`HTTP error! Status: ${response.status}`, 400);
   }
   // Query Data
   const data = await response.json();
   // Is Email Valid
   if (data.data.status !== 'valid') {
-    throw new AppError('Email is Invalid From API');
+    throw new AppError('Email is Invalid From API', 400);
   }
+  console.log(data.data.status);
 };

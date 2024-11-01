@@ -19,13 +19,13 @@ const validateSignUp = async (username, email, password, role) => {
   await utils.validateEmail(email);
 
   if (!password || typeof password !== 'string') {
-    throw new AppError('Password Doesnt Exist');
+    throw new AppError('Password Doesnt Exist', 400);
   }
 };
 
 exports.signup = async ({ username, email, password, role }) => {
   // Validate Sign Up Creds
-  validateSignUp(username, email, password, role);
+  await validateSignUp(username, email, password, role);
   const newUser = await User.create({
     username,
     email,
