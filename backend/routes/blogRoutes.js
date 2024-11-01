@@ -7,4 +7,9 @@ const jwtSecurity = require('../jwt/jwtSecurity');
 router
   .route('/createBlog')
   .post(jwtSecurity.protect, blogController.createBlog);
+
+router
+  .route('/like/:blogId')
+  .post(jwtSecurity.protect, blogController.likeBlog);
+
 module.exports = router;

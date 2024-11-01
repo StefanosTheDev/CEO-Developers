@@ -13,7 +13,25 @@ const blogPostSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
-  interactions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Interaction' }], // Array of references to interactions
+  // Interactions
+  likes: [
+    {
+      userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+      likedAt: { type: Date, default: Date.now },
+    },
+  ],
+  upvotes: [
+    {
+      userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+      upvotedAt: { type: Date, default: Date.now },
+    },
+  ],
+  comments: [
+    {
+      userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+      content: { type: String, required: true },
+      commentedAt: { type: Date, default: Date.now },
+    },
+  ],
 });
-
 module.exports = mongoose.model('BlogPost', blogPostSchema);
