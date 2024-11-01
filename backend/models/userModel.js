@@ -32,20 +32,16 @@ const userSchema = new mongoose.Schema({
   interactions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Interaction' }], // Array of references to interactions
 });
 
-// Document Middleware // (Pre.Save) // between getting the data and the db.
+// Encrypt Password Upon Save Event (Used For Creating Accounts)
 userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next(); // if thepassword has not been modified then just exit
-  // otherwise do this bcrypt or hash
-  this.password = await bcrypt.hash(this.password, 12); // this is the salt. (12)  computer have been more successful so use this. Later in time though use something else. Higher Number > Encryption
-  this.passwordConfirm = undefined; //  After the validation was successful. ????  // delete password confirm field.
+  if (!this.isModified('password')) return next();
+  this.password = await bcrypt.hash(this.password, 12);
   next();
 });
 
-// instance method
-userSchema.methods.correctPassword = async function (
-  candidatePassword,
-  userPassword
-) {
-  return await bcrypt.compare(candidatePassword, userPassword); // return true if same . False if not
+// instance method used for validating pass
+userSchema.methods.correctPassword = async function (incomPass, userPassword) {
+  return await bcrypt.compare(incomPass, userPassword); // return true if same . False if not
 };
+
 module.exports = mongoose.model('User', userSchema);

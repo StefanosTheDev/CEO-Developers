@@ -3,24 +3,6 @@ dotenv.config({ path: './config.env' }); // Load environment variables
 const fetch = require('node-fetch');
 const AppError = require('../error/AppError');
 
-exports.validateEmail = async (email) => {
-  const apiKey = process.env.HUNTER_KEY;
-  const url = `https://api.hunter.io/v2/email-verifier?email=${email}&api_key=${apiKey}`;
-  const response = await fetch(url);
-  console.log('here');
-  // Check Response
-  if (!response.ok) {
-    throw new AppError(`HTTP error! Status: ${response.status}`, 400);
-  }
-  // Query Data
-  const data = await response.json();
-  // Is Email Valid
-  if (data.data.status !== 'valid') {
-    throw new AppError('Email is Invalid From API', 400);
-  }
-  console.log(data.data.status);
-};
-
 exports.validateStringField = (field, fieldName, options = {}) => {
   const { min, max } = options;
 
@@ -38,5 +20,28 @@ exports.validateStringField = (field, fieldName, options = {}) => {
       `${fieldName} must be no more than ${max} characters`,
       400
     );
+  }
+};
+
+exports.validateEmail = async (email) => {
+  const apiKey = process.env.HUNTER_KEY;
+  const url = `https://api.hunter.io/v2/email-verifier?email=${email}&api_key=${apiKey}`;
+  if (!apiKey) {
+    throw new AppError('Cannot Read Hunter API Key');
+  }
+  // Leverage this to deflect unecessary API Key Usage
+  this.validateStringField(email, 'Email');
+
+  const response = await fetch(url);
+
+  // Check Response
+  if (!response.ok) {
+    throw new AppError(`HTTP error! Status: ${response.status}`, 400);
+  }
+  // Query Data
+  const data = await response.json();
+  // Is Email Valid
+  if (data.data.status !== 'valid') {
+    throw new AppError('Email is Invalid From API', 400);
   }
 };

@@ -1,23 +1,13 @@
 const AppError = require('../error/AppError');
 const utils = require('../utils/utils');
 const User = require('../models/userModel');
-const signToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
-  }); // so we sign that
-};
-
-const validateSignUp = async (username, email, password, role) => {
-  // Unsure what I want to do with Role just yet
-};
-
+const jwtSecurity = require('../jwt/jwtSecurity');
 exports.signup = async ({ username, email, password, role }) => {
-  // Check Input Variables
+  // Check Username / Password
   utils.validateStringField(username, 'Username', { min: 6, max: 16 });
   utils.validateStringField(password, 'Password', { min: 6, max: 16 });
-  utils.validateStringField(email, 'Email');
 
-  // Hit API Call for Validate Email
+  // Check Email
   await utils.validateEmail(email);
 
   const newUser = await User.create({
@@ -30,20 +20,20 @@ exports.signup = async ({ username, email, password, role }) => {
 };
 
 exports.login = async ({ email, password }) => {
-  // 1) Check if email and password exist
-  if (!email || !password) {
-    throw new AppError('Email or Password does not exist', 400);
-  }
+  // 1) Check Instances of Email Password
+  utils.validateStringField(email, 'Email');
+  utils.validateStringField(password, 'Password');
 
-  // 2) Check if user exists && password is correct
+  // 2) // Find the User with that email & password
   const user = await User.findOne({ email }).select('+password'); // Check for user by email
 
+  // 3) Check if User Obj Exist and if password is correct via middleware
   if (!user || !(await user.correctPassword(password, user.password))) {
     return next(new AppError('Incorrect Email Or Password', 401)); // 401 Unauth
   }
-  // 3) Generate a token for the user
-  const token = signToken(user._id);
+  // 4) Generate JWT token for user
+  const token = jwtSecurity.signToken(user._id);
 
-  // 4) Return both user and token
+  // 5) Return both user and token
   return { user, token };
 };

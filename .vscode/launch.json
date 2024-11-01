@@ -1,0 +1,29 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Dev",
+      "program": "/Users/stefanossophocleous/Desktop/CEO Developers/CEO-Developers/backend/server.js",
+      "envFile": "/Users/stefanossophocleous/Desktop/CEO Developers/CEO-Developers/backend/config.env", // Load .env file for environment variables
+      "runtimeExecutable": "nodemon",
+      "restart": true,
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Prod",
+      "program": "/Users/stefanossophocleous/Desktop/CEO Developers/CEO-Developers/backend/server.js",
+      "envFile": "/Users/stefanossophocleous/Desktop/CEO Developers/CEO-Developers/backend/config.env", // Ensure .env file is loaded for production too, if needed
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "runtimeExecutable": "node",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ]
+}

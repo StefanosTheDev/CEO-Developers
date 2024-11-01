@@ -37,3 +37,4 @@ module.exports.login = async (req, res, next) => {
     next(err);
   }
 };
+module.exports.resetPassword = async (req, res, next) => {};
