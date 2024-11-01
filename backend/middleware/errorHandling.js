@@ -1,49 +1,52 @@
-// Exporting the Arrow function
-const mongoose = require('mongoose');
 const AppError = require('../error/AppError');
-const { MongoServerError } = require('mongodb');
+const fs = require('fs');
+const sendErrorDev = (err, res) => {
+  res.status(err.statusCode || 500).json({
+    status: err.status || 'error',
+    error: err,
+    message: err.message,
+    stack: err.stack,
+  });
+};
 
-module.exports = (err, req, res, next) => {
-  if (err instanceof AppError) {
-    return res.status(err.statusCode).json({
+const sendErrorProd = (err, res) => {
+  if (err.isOperational) {
+    res.status(err.statusCode || 500).json({
       status: err.status,
       message: err.message,
     });
-  }
-  if (err instanceof mongoose.Error.ValidationError) {
-    return res.status(400).json({
-      status: 'fail',
-      message: err.message,
+  } else {
+    // Log error to file in production
+    const errorLog = `Time: ${new Date().toISOString()}\nError: ${
+      err.message
+    }\nStatus: ${err.statusCode || 500}\nStack: ${err.stack}\n\n`;
+
+    // Corrected syntax for fs.appendFileSync
+    fs.appendFileSync(
+      '/Users/stefanossophocleous/Desktop/CEO Developers/CEO-Developers/backend/logs/prod_errors.log',
+      errorLog
+    );
+
+    res.status(err.statusCode).json({
+      status: 'error',
+      message: 'Something went wrong!',
     });
   }
-  // Handling MongoDB-specific errors
-  if (err instanceof MongoServerError) {
-    switch (err.code) {
-      case 11000: // Duplicate key error
-        return res.status(400).json({
-          status: 'fail',
-          message: `Duplicate key error: ${JSON.stringify(err.keyValue)}`,
-        });
-      case 121: // Document validation error
-        return res.status(400).json({
-          status: 'fail',
-          message: 'Document validation failed.',
-        });
-      case 50: // Query timeout
-        return res.status(500).json({
-          status: 'error',
-          message: 'Query timed out. Please try again.',
-        });
-      default: // Other MongoDB errors
-        return res.status(500).json({
-          status: 'error',
-          message: 'A MongoDB server error occurred.',
-        });
-    }
-  }
-  res.status(500).json({
-    status: 'error',
-    message: 'Something went wrong!',
-  });
 };
-// dont need next() cuz im stopping here
+
+module.exports = (err, req, res, next) => {
+  err.statusCode = err.statusCode || 500;
+  err.status = err.status || 'error';
+
+  if (process.env.NODE_ENV === 'development') {
+    sendErrorDev(err, res);
+  } else if (process.env.NODE_ENV === 'production') {
+    let error = { ...err };
+
+    if (err instanceof AppError) {
+      error = err;
+    }
+
+    sendErrorProd(error, res);
+  }
+};

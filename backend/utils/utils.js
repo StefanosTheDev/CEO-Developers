@@ -20,3 +20,23 @@ exports.validateEmail = async (email) => {
   }
   console.log(data.data.status);
 };
+
+exports.validateStringField = (field, fieldName, options = {}) => {
+  const { min, max } = options;
+
+  // Check that field exists and is a string
+  if (!field || typeof field !== 'string') {
+    throw new AppError(`${fieldName} is not a valid string`, 400);
+  }
+
+  // Optional length validation
+  if (min && field.length < min) {
+    throw new AppError(`${fieldName} must be at least ${min} characters`, 400);
+  }
+  if (max && field.length > max) {
+    throw new AppError(
+      `${fieldName} must be no more than ${max} characters`,
+      400
+    );
+  }
+};

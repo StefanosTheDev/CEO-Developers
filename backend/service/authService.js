@@ -8,24 +8,18 @@ const signToken = (id) => {
 };
 
 const validateSignUp = async (username, email, password, role) => {
-  if (!username || typeof username !== 'string') {
-    throw new AppError('Name does not meet the parameter', 400);
-  }
-  // Deflect Prior To Hitting Token
-  if (!email || typeof email !== 'string') {
-    throw new AppError('Name does not meet the parameter', 400);
-  }
-  // Hit the HUNTER API NOW
-  await utils.validateEmail(email);
-
-  if (!password || typeof password !== 'string') {
-    throw new AppError('Password Doesnt Exist', 400);
-  }
+  // Unsure what I want to do with Role just yet
 };
 
 exports.signup = async ({ username, email, password, role }) => {
-  // Validate Sign Up Creds
-  await validateSignUp(username, email, password, role);
+  // Check Input Variables
+  utils.validateStringField(username, 'Username', { min: 6, max: 16 });
+  utils.validateStringField(password, 'Password', { min: 6, max: 16 });
+  utils.validateStringField(email, 'Email');
+
+  // Hit API Call for Validate Email
+  await utils.validateEmail(email);
+
   const newUser = await User.create({
     username,
     email,
