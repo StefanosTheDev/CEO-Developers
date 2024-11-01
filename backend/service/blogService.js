@@ -27,4 +27,6 @@ exports.likeBlog = async ({ blogId, userId }) => {
 };
 
 // Due to the fact
-exports.Like_Or_Upvote = async ({ blogId, userId }) => {};
+exports.blogEngagement = async ({ blogId, userId }) => {};
+
+exports.sanatizeBody = async ({}) => {};

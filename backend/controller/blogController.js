@@ -18,9 +18,14 @@ exports.createBlog = async (req, res, next) => {
   }
 };
 
+// Create a functio that can handle either Like, Upvote or Comment
+// From there pass that into the
 exports.likeBlog = async (req, res, next) => {
   try {
+    // for now we can do something like this to test.
     const { blogId } = req.params;
+    const { comment, upvote, like } = req.body;
+    const checkBody = await blog.service.sanatizeBody({});
     const blog = await blogService.likeBlog({ blogId, userId: req.user._id });
     res.status(200).json({
       status: 'success',
@@ -32,5 +37,3 @@ exports.likeBlog = async (req, res, next) => {
     next(err);
   }
 };
-
-exports.upVote = async (req, res, next) => {};
