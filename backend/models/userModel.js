@@ -52,7 +52,7 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
 
     return JWTTimestamp < changedTimestamp;
   }
-
+  // Stef
   // False means NOT changed
   return false;
 };
