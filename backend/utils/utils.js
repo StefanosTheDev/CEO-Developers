@@ -16,6 +16,6 @@ exports.validateEmail = async (email) => {
   const data = await response.json();
   // Is Email Valid
   if (data.data.status !== 'valid') {
-    throw new AppError('Emali is Invalid From API');
+    throw new AppError('Email is Invalid From API');
   }
 };
