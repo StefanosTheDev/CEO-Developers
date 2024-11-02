@@ -37,4 +37,3 @@ exports.login = async (req, res, next) => {
     next(err);
   }
 };
-exports.resetPassword = async (req, res, next) => {};

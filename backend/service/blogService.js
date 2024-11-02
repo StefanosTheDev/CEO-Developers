@@ -1,13 +1,13 @@
 const Blog = require('../models/blogModel');
 const AppError = require('../error/AppError');
-
+const util = require('../utils/utils');
 exports.createBlog = async ({ title, content, authorId }) => {
   const blog = await Blog.create({ title, content, authorId });
   return blog;
 };
 exports.getAllBlogs = async () => {};
 
-exports.likeBlog = async ({ blogId, userId }) => {
+exports.blogEngagement = async ({ blogId, userId }) => {
   // 1) Get Blog By ID
   const blog = await Blog.findById(blogId);
   if (!blog) {
@@ -25,8 +25,3 @@ exports.likeBlog = async ({ blogId, userId }) => {
   await blog.save();
   return blog;
 };
-
-// Due to the fact
-exports.blogEngagement = async ({ blogId, userId }) => {};
-
-exports.sanatizeBody = async ({}) => {};
