@@ -11,6 +11,14 @@ exports.createBlog = async ({ title, content, authorId }) => {
   return blog;
 };
 
+exports.getAllBlogs = async () => {
+  // Query All Blogs
+  const blogs = await Blog.findOne({}); // get all blogs
+  if (!blogs) {
+    throw new AppError('No blogs exist');
+  }
+  return blogs;
+};
 exports.blogEngagement = async ({ blogId, userId }) => {
   // 1) Get Blog By ID
   const blog = await Blog.findById(blogId);

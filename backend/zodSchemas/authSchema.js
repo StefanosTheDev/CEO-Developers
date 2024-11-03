@@ -11,6 +11,7 @@ const authSchema = z.object({
     .regex({}) // Regex Check Email
     .strict({ message: 'There is an Invalid Field in The Request Body' }),
 });
+
 module.exports = {
   authSchema,
 };
