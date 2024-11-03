@@ -18,6 +18,9 @@ exports.createBlog = async (req, res, next) => {
   }
 };
 
+exports.getAllBlogs = async (req, res, next) => {};
+exports.updateBlogByID = async (req, res, next) => {};
+exports.getBlogByID = async (req, res, next) => {};
 exports.blogEngagement = async (req, res, next) => {
   try {
     // for now we can do something like this to test.

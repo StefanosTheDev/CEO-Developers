@@ -42,11 +42,9 @@ module.exports = (err, req, res, next) => {
     sendErrorDev(err, res);
   } else if (process.env.NODE_ENV === 'production') {
     let error = { ...err };
-
     if (err instanceof AppError) {
       error = err;
     }
-
     sendErrorProd(error, res);
   }
 };

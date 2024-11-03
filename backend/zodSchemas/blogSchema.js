@@ -9,9 +9,7 @@ const blogSchema = z
 
     // Content  Schema
     content: z
-      .string({
-        required_error: 'Content is required',
-      })
+      .string({ required_error: 'Content is required' })
       .min(1, { message: 'Content cannot be empty' }),
   })
   .strict({ message: 'Unexpected field in the request body' });

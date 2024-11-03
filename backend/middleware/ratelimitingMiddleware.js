@@ -3,7 +3,7 @@
 const rateLimit = require('express-rate-limit');
 
 const createBlogLimiter = rateLimit({
-  windowMs: 2 * 60 * 1000, // 15 minutes
+  windowMs: 100 * 60 * 1000, // 15 minutes
   max: 1, // Limit each IP to 10 create blog requests per windowMs
   message: {
     status: 'fail',
