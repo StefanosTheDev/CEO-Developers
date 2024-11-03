@@ -5,12 +5,13 @@ const jwtSecurity = require('../jwt/jwtSecurity');
 const { z } = require('zod'); // import zod
 const { validateBody } = require('../middleware/validationMiddleware');
 const { blogSchema } = require('../zodSchemas/blogSchema');
-
+const { createBlogLimiter } = require('../middleware/ratelimitingMiddleware');
 // Protect This Route
 router
   .route('/createBlog')
   .post(
     jwtSecurity.protect,
+    createBlogLimiter,
     validateBody(blogSchema),
     blogController.createBlog
   );

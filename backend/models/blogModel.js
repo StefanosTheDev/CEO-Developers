@@ -1,11 +1,18 @@
 const mongoose = require('mongoose');
 
 const blogPostSchema = new mongoose.Schema({
-  title: { type: String, required: true },
+  title: {
+    type: String,
+    required: true,
+    unique: [true, 'Title Must Be Unique'],
+    min: [5, 'Title Length Must Be 5'],
+    max: [15, 'TItle Length Max Is 15'],
+  },
   content: {
     type: String,
     required: true,
-    max: [500, 'Blog Max Lenght Is 500'],
+    min: [1, 'Blog Length Must Be 1'],
+    max: [500, 'Blog Length Max Is 500'],
   },
   createdAt: { type: Date, default: Date.now },
   authorId: {

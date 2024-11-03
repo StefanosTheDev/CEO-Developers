@@ -1,11 +1,15 @@
 const Blog = require('../models/blogModel');
 const AppError = require('../error/AppError');
-const util = require('../utils/utils');
+
 exports.createBlog = async ({ title, content, authorId }) => {
+  // Check if Blog exist with same title
+  const existingBlog = await Blog.findOne({ title });
+  if (existingBlog) {
+    throw new AppError('A blog with this title already exists', 400);
+  }
   const blog = await Blog.create({ title, content, authorId });
   return blog;
 };
-exports.getAllBlogs = async () => {};
 
 exports.blogEngagement = async ({ blogId, userId }) => {
   // 1) Get Blog By ID

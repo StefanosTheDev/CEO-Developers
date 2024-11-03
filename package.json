@@ -1,13 +1,13 @@
 {
   "dependencies": {
+    "express-rate-limit": "^7.4.1",
+    "helmet": "^8.0.0",
     "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
     "jest": "^29.7.0"
   },
-    "scripts": {
-      "test": "jest"
-    }
+  "scripts": {
+    "test": "jest"
   }
-  
-
+}
