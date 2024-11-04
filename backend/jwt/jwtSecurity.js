@@ -9,8 +9,6 @@ exports.signToken = (id) => {
 };
 
 exports.protect = async (req, res, next) => {
-  // 1) Get token and check of it's there
-
   let token;
   if (
     req.headers.authorization &&
@@ -25,7 +23,6 @@ exports.protect = async (req, res, next) => {
   }
   // 2) Verification Token
   const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-  console.log(decoded);
   // 3) Check if user still exists
   const currentUser = await User.findById(decoded.id);
 
@@ -35,13 +32,6 @@ exports.protect = async (req, res, next) => {
       new AppError('The user belonging to this token does not longer exist ')
     );
   }
-
-  // // 4) Check if user changed passwords after the token was issued
-  // if (currentUser.changedPasswordAfter(decoded.iat)) {
-  //   return next(
-  //     new AppError('User recently change dpassword! Please log in again', 401)
-  //   );
-  // }
   req.user = currentUser;
   next();
 };
