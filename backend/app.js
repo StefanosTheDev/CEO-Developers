@@ -16,6 +16,7 @@ app.use(express.json());
 app.use(helmet());
 app.use('/api/auth', authRouter);
 app.use('/api/blog', blogRouter);
+
 // Handle undefined routes
 app.all('*', (req, res, next) => {
   next(new AppError(`Cannot find ${req.originalUrl} on this server`, 404));

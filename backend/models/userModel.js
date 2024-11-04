@@ -17,8 +17,9 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, 'Password Required'],
-    min: [6, 'Password  minimum length is 12'],
+    min: [6, 'Password  minimum length is 6'],
     max: [16, 'Password maximum length is 12'],
+    select: false,
   },
   role: {
     type: String,
@@ -29,7 +30,6 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  interactions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Interaction' }], // Array of references to interactions
 });
 
 // Encrypt Password Upon Save Event (Used For Creating Accounts)
@@ -39,20 +39,4 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-// instance method used for validating pass
-userSchema.methods.correctPassword = async function (incomPass, userPassword) {
-  return await bcrypt.compare(incomPass, userPassword); // return true if same . False if not
-};
-userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
-  if (this.passwordChangedAt) {
-    const changedTimestamp = parseInt(
-      this.passwordChangedAt.getTime() / 1000,
-      10
-    );
-
-    return JWTTimestamp < changedTimestamp;
-  }
-
-  return false;
-};
 module.exports = mongoose.model('User', userSchema);

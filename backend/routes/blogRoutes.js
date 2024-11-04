@@ -10,7 +10,6 @@ router
   .route('/createBlog')
   .post(
     jwtSecurity.protect,
-    rateLimitRequests,
     validateBody(blogSchema),
     blogController.createBlog
   );

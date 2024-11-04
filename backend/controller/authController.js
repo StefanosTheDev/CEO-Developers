@@ -1,13 +1,8 @@
 const authService = require('../service/authService');
 exports.signup = async (req, res, next) => {
   try {
-    const { username, email, password, role } = req.body;
-    const user = await authService.signup({
-      username,
-      email,
-      password,
-      role,
-    });
+    const incommingUser = req.body;
+    const user = await authService.signup(incommingUser);
     // Respond with the created user
     res.status(201).json({
       status: 'success',

@@ -29,11 +29,7 @@ exports.validateEmail = async (email) => {
   if (!apiKey) {
     throw new AppError('Cannot Read Hunter API Key');
   }
-  // Leverage this to deflect unecessary API Key Usage
-  this.validateStringField(email, 'Email');
-
   const response = await fetch(url);
-
   // Check Response
   if (!response.ok) {
     throw new AppError(`HTTP error! Status: ${response.status}`, 400);
@@ -44,4 +40,5 @@ exports.validateEmail = async (email) => {
   if (data.data.status !== 'valid') {
     throw new AppError('Email is Invalid From API', 400);
   }
+  return true;
 };

@@ -4,9 +4,9 @@ const { z } = require('zod');
 const AppError = require('../error/AppError');
 
 exports.validateBody = (schema) => {
-  return (req, res, next) => {
+  return async (req, res, next) => {
     try {
-      const validatedData = schema.parse(req.body);
+      const validatedData = await schema.parseAsync(req.body);
       req.validatedBody = validatedData;
       next();
     } catch (err) {
@@ -24,3 +24,4 @@ exports.validateBody = (schema) => {
     }
   };
 };
+// validationMiddleware.js
