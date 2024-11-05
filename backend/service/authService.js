@@ -2,9 +2,10 @@ const AppError = require('../error/AppError');
 const utils = require('../utils/utils');
 const User = require('../models/userModel');
 const jwtSecurity = require('../jwt/jwtSecurity');
+const bcrypt = require('bcryptjs');
 
-exports.signup = async ({ username, email, password }) => {
-  const newUser = await User.create({ username, email, password });
+exports.signup = async ({ username, email, password, role }) => {
+  const newUser = await User.create({ username, email, password, role });
   return newUser;
 };
 exports.login = async ({ email, password }) => {

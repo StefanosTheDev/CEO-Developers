@@ -12,6 +12,8 @@ const authSchema = z
       .min(6, { message: 'Username minimum must be 6' })
       .max(12, { message: 'Username maximum must be 12' }),
 
+    role: z.enum(['admin', 'user']).optional(), // Specify allowed roles here
+
     email: z
       .string({ required_error: 'Email is Required' })
       .email({ message: 'Invalid email format' })
@@ -22,6 +24,30 @@ const authSchema = z
   })
   .strict({ message: 'There is an Invalid Field in The Request Body' });
 
+const loginSchema = z
+  .object({
+    password: z
+      .string({ required_error: 'Password Required' })
+      .min(6, { message: 'Username minimum must be 6' })
+      .max(12, { message: 'Username maximum must be 12' }),
+
+    email: z
+      .string({ required_error: 'Email is Required' })
+      .email({ message: 'Invalid email format' })
+      .refine(async (email) => {
+        console.log('Refine function called', email);
+        return await validateEmail(email);
+      }),
+  })
+  .strict({ message: 'There is an Invalid Field in The Request Body' });
+
+// Define your schema for role validation
+const isAdminSchema = z.object({
+  role: z.enum(['admin']), // Specify allowed roles here
+});
+
 module.exports = {
   authSchema,
+  loginSchema,
+  isAdminSchema,
 };

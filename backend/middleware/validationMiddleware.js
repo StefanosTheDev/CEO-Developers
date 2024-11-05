@@ -24,4 +24,14 @@ exports.validateBody = (schema) => {
     }
   };
 };
-// validationMiddleware.js
+
+exports.validateRole = (schema) => {
+  return (req, res, next) => {
+    try {
+      schema.parse(req.user); // Validate req.user against the provided schema
+      next(); // If validation passes, proceed
+    } catch (error) {
+      return next(new AppError('Permission Issue', 4040));
+    }
+  };
+};
