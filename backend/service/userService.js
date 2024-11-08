@@ -32,11 +32,23 @@ exports.updateUserByID = async ({ id }, { username, email, password }) => {
   // Look Into The Req Object. If Req.body exists send it . If Req.param xist
 };
 
+// GOt it so we need to ensure the format is correct
 exports.deleteUserByID = async ({ id }) => {
+  // for this if the ID doesnt exist. Then its a cast erro
+
   const delUser = await User.findByIdAndDelete(id);
   if (!delUser) {
     throw new AppError('User Not Found');
   }
   console.log(delUser.username);
   return delUser;
+};
+
+// Yah need to handle Cast Errors
+exports.getUserByID = async ({ id }) => {
+  const user = await User.findById(id);
+  if (!user) {
+    throw new AppError('User not found');
+  }
+  return user;
 };

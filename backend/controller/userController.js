@@ -48,3 +48,17 @@ exports.deleteUserByID = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.getUserByID = async (req, res, next) => {
+  try {
+    const user = await userService.getUserByID(req.params);
+    res.status(200).json({
+      status: 'success',
+      data: {
+        User: user,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+};

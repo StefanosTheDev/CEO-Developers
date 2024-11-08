@@ -75,7 +75,7 @@ const updateSchema = z
 
   .strict({ message: 'There is an Invalid Field in The Request Body' });
 
-const deleteSchema = z
+const idOnlySchema = z
   .object({
     id: z.string({ required_error: 'ID is required' }),
   })
@@ -85,5 +85,5 @@ module.exports = {
   loginSchema,
   isAdminSchema,
   updateSchema,
-  deleteSchema,
+  idOnlySchema,
 };
