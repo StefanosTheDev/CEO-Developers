@@ -10,8 +10,6 @@ exports.getAllUsers = async () => {
   }
   return users;
 };
-
-// Need To maybe handle if it's the same data being requestd from update / non
 exports.updateUserByID = async ({ id }, { username, email, password }) => {
   // Build an updateData object with only the fields that are provided
   const updatedData = {};
@@ -31,8 +29,6 @@ exports.updateUserByID = async ({ id }, { username, email, password }) => {
   return updateUser;
   // Look Into The Req Object. If Req.body exists send it . If Req.param xist
 };
-
-// GOt it so we need to ensure the format is correct
 exports.deleteUserByID = async ({ id }) => {
   // for this if the ID doesnt exist. Then its a cast erro
 
@@ -43,8 +39,6 @@ exports.deleteUserByID = async ({ id }) => {
   console.log(delUser.username);
   return delUser;
 };
-
-// Yah need to handle Cast Errors
 exports.getUserByID = async ({ id }) => {
   const user = await User.findById(id);
   if (!user) {

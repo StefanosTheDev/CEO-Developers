@@ -12,8 +12,6 @@ exports.getAllUsers = async (req, res, next) => {
     next(err);
   }
 };
-
-// INCOMPLETE
 exports.updateUserByID = async (req, res, next) => {
   try {
     const incommingUser = req.body;
@@ -34,7 +32,6 @@ exports.updateUserByID = async (req, res, next) => {
     next(err);
   }
 };
-
 exports.deleteUserByID = async (req, res, next) => {
   try {
     const deleteUser = await userService.deleteUserByID(req.params);
@@ -48,7 +45,6 @@ exports.deleteUserByID = async (req, res, next) => {
     next(err);
   }
 };
-
 exports.getUserByID = async (req, res, next) => {
   try {
     const user = await userService.getUserByID(req.params);

@@ -33,20 +33,18 @@ exports.getAllBlogs = async (req, res, next) => {
 };
 exports.updateBlogByID = async (req, res, next) => {
   try {
-    const { id } = req.params; // Get the user ID from URL params
-    const { title, content } = req.body; // Destructure the potential update fields
-
-    // Build an updateData object with only the fields that are provided
-    const updatedData = {};
-    if (title) updatedData.title = title;
-    if (content) updatedData.content = content;
+    const incommingBlogID = req.params; // Get the user ID from URL params
+    const incommingBlog = req.body; // Destructure the potential update fields
 
     // Call the service to update the Blog
-    const updateBlog = await userService.updateBlogByID(id, updatedData);
+    const blog = await blogService.updateBlogByID(
+      incommingBlogID,
+      incommingBlog
+    );
     res.status(200).json({
       status: 'delete success',
       data: {
-        blog: updateBlog,
+        blog: blog,
         admin_id: req.user._id,
       },
     });
@@ -54,7 +52,6 @@ exports.updateBlogByID = async (req, res, next) => {
     next(err);
   }
 };
-
 exports.deleteBlogByID = async (req, res, next) => {
   try {
     const { id } = req.params; // Get the user ID from URL params
@@ -62,6 +59,7 @@ exports.deleteBlogByID = async (req, res, next) => {
     next(err);
   }
 };
+exports.getBlogByID = async (req, res, next) => {};
 exports.blogEngagement = async (req, res, next) => {
   try {
     // for now we can do something like this to test.

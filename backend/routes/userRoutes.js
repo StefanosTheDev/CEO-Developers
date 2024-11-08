@@ -13,6 +13,7 @@ router
     validate(isAdminSchema),
     userController.getAllUsers
   );
+
 router
   .route('/:id')
   .put(

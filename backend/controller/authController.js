@@ -14,7 +14,6 @@ exports.signup = async (req, res, next) => {
     next(err);
   }
 };
-
 exports.login = async (req, res, next) => {
   try {
     const { user, token } = await authService.login(req.body);
@@ -30,3 +29,6 @@ exports.login = async (req, res, next) => {
     next(err);
   }
 };
+exports.logout = async (req, res, next) => {};
+
+exports.forgotpass = async (req, res, next) => {};

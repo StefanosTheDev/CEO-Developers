@@ -38,15 +38,20 @@ exports.blogEngagement = async ({ blogId, userId }) => {
   return blog;
 };
 
-exports.updateBlogByID = async (id, updateData) => {
-  const updatedBlog = await User.findByIdAndUpdate(id, updateData, {
+exports.updateBlogByID = async ({ id }, { title, content }) => {
+  const updatedData = {};
+
+  if (title) updatedData.title = title;
+  if (content) updatedData.content = content;
+
+  const blog = await Blog.findByIdAndUpdate(id, updatedData, {
     new: true, // Return the updated document
     runValidators: true, // Ensure validation for updated fields
   });
 
-  if (!updatedBlog) {
+  if (!blog) {
     throw new Error('Blog not found'); // Handle Blog not found case
   }
 
-  return updatedBlog;
+  return blog;
 };

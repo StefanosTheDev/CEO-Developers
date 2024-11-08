@@ -6,14 +6,15 @@ const AppError = require('../error/AppError');
 exports.validate = (schema) => {
   return async (req, res, next) => {
     try {
-      if (Object.keys(req.body).length > 0) {
-        const validatedData = await schema.parseAsync(req.body);
-        req.validatedBody = validatedData;
-      }
-      if (Object.keys(req.params).length > 0) {
-        const validateParamData = await schema.parseAsync(req.params);
-        req.validatedParams = validateParamData;
-      }
+      // Merge `req.params` and `req.body` into a single object for validation
+      const dataToValidate = { ...req.params, ...req.body };
+
+      // Validate the combined data with the provided schema
+      const validatedData = await schema.parseAsync(dataToValidate);
+
+      // Attach validated data to `req`
+      req.validatedData = validatedData;
+
       next();
     } catch (err) {
       if (err instanceof z.ZodError) {

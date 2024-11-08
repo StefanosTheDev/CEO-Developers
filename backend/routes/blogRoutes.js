@@ -3,8 +3,9 @@ const router = express.Router();
 const blogController = require('../controller/blogController');
 const jwtSecurity = require('../jwt/jwtSecurity');
 const { validate } = require('../middleware/validationMiddleware');
-const { blogSchema } = require('../zodSchemas/blogSchema');
+const { blogSchema, updateBlogSchema } = require('../zodSchemas/blogSchema');
 const { rateLimitRequests } = require('../middleware/ratelimitingMiddleware');
+const { idOnlySchema } = require('../zodSchemas/authSchema');
 
 // Protect This Route
 router
@@ -17,8 +18,14 @@ router
   .route('/:id')
   .put(
     jwtSecurity.protect,
-    validate(blogSchema),
+    validate(updateBlogSchema),
     blogController.updateBlogByID
+  )
+  .get(jwtSecurity.protect, validate(blogSchema), blogController.getBlogByID)
+  .delete(
+    jwtSecurity.protect,
+    validate(idOnlySchema),
+    blogController.deleteBlogByID
   );
 
 module.exports = router;
