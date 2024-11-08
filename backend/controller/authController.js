@@ -19,7 +19,7 @@ exports.login = async (req, res, next) => {
   try {
     const { user, token } = await authService.login(req.body);
     // Respond with the user and token
-    res.status(201).json({
+    res.status(200).json({
       status: 'success',
       data: {
         user,

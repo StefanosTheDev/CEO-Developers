@@ -12,6 +12,39 @@ exports.getAllUsers = async (req, res, next) => {
     next(err);
   }
 };
-exports.updateUserByID = async (req, res, next) => {};
 
-exports.deleteUserByID = async (req, res, next) => {};
+// INCOMPLETE
+exports.updateUserByID = async (req, res, next) => {
+  try {
+    const incommingUser = req.body;
+    const incommingUserID = req.params;
+
+    const updateUser = await userService.updateUserByID(
+      incommingUserID,
+      incommingUser
+    );
+    res.status(200).json({
+      status: 'success',
+      data: {
+        User: updateUser,
+        admin_id: req.user._id,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.deleteUserByID = async (req, res, next) => {
+  try {
+    const deleteUser = await userService.deleteUserByID(req.params);
+    res.status(200).json({
+      status: 'success',
+      data: {
+        User: deleteUser,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+};

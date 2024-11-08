@@ -42,3 +42,8 @@ exports.validateEmail = async (email) => {
   }
   return true;
 };
+
+exports.isObjectEmpty = (obj) => {
+  // If Length is === 0  True Else False
+  return Object.keys(obj).length === 0;
+};
