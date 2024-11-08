@@ -1,4 +1,5 @@
 const authService = require('../service/authService');
+
 exports.signup = async (req, res, next) => {
   try {
     const incommingUser = req.body;

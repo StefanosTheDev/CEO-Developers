@@ -31,7 +31,7 @@ exports.validateRole = (schema) => {
       schema.parse(req.user); // Validate req.user against the provided schema
       next(); // If validation passes, proceed
     } catch (error) {
-      return next(new AppError('Permission Issue', 4040));
+      return next(new AppError('Unauthorized. Only Admin Have access', 400));
     }
   };
 };

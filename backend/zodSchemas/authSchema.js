@@ -43,7 +43,7 @@ const loginSchema = z
 
 // Define your schema for role validation
 const isAdminSchema = z.object({
-  role: z.enum(['admin']), // Specify allowed roles here
+  role: z.enum(['admin']),
 });
 
 module.exports = {

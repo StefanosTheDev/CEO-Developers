@@ -2,6 +2,8 @@ const { z } = require('zod');
 
 const blogSchema = z
   .object({
+    id: z.string().optional(),
+
     title: z
       .string({ required_error: 'Title is required' })
       .max(10, { message: 'Title cannot exceed 10 characters' }),

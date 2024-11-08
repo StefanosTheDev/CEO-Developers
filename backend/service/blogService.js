@@ -37,3 +37,16 @@ exports.blogEngagement = async ({ blogId, userId }) => {
   await blog.save();
   return blog;
 };
+
+exports.updateBlogByID = async (id, updateData) => {
+  const updatedBlog = await User.findByIdAndUpdate(id, updateData, {
+    new: true, // Return the updated document
+    runValidators: true, // Ensure validation for updated fields
+  });
+
+  if (!updatedBlog) {
+    throw new Error('Blog not found'); // Handle Blog not found case
+  }
+
+  return updatedBlog;
+};

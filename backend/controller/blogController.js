@@ -17,7 +17,6 @@ exports.createBlog = async (req, res, next) => {
     next(err);
   }
 };
-
 exports.getAllBlogs = async (req, res, next) => {
   try {
     const getAllBlogs = await blogService.getAllBlogs();
@@ -25,15 +24,44 @@ exports.getAllBlogs = async (req, res, next) => {
       status: 'success',
       data: {
         Blogs: getAllBlogs,
+        admin_id: req.user._id,
       },
     });
   } catch (err) {
     next(err);
   }
 };
-exports.updateBlogByID = async (req, res, next) => {};
-exports.getBlogByID = async (req, res, next) => {};
+exports.updateBlogByID = async (req, res, next) => {
+  try {
+    const { id } = req.params; // Get the user ID from URL params
+    const { title, content } = req.body; // Destructure the potential update fields
 
+    // Build an updateData object with only the fields that are provided
+    const updatedData = {};
+    if (title) updatedData.title = title;
+    if (content) updatedData.content = content;
+
+    // Call the service to update the Blog
+    const updateBlog = await userService.updateBlogByID(id, updatedData);
+    res.status(200).json({
+      status: 'delete success',
+      data: {
+        blog: updateBlog,
+        admin_id: req.user._id,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.deleteBlogByID = async (req, res, next) => {
+  try {
+    const { id } = req.params; // Get the user ID from URL params
+  } catch (err) {
+    next(err);
+  }
+};
 exports.blogEngagement = async (req, res, next) => {
   try {
     // for now we can do something like this to test.
@@ -43,7 +71,7 @@ exports.blogEngagement = async (req, res, next) => {
     const type = blogService.checkData({ comment, upvote, like });
     const blog = await blogService.blogEngagement({
       blogId,
-      userId: req.user._id,
+      admin_id: req.user._id,
       type,
     });
 

@@ -15,8 +15,6 @@ router
   );
 router.route('/allBlogs').get(jwtSecurity.protect, blogController.getAllBlogs);
 
-// router
-//   .route('/like/:blogId')
-//   .post(jwtSecurity.protect, blogController.likeBlog);
+router.route('/:id').put(jwtSecurity.protect, blogController.updateBlogByID);
 
 module.exports = router;
