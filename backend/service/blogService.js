@@ -55,3 +55,11 @@ exports.updateBlogByID = async ({ id }, { title, content }) => {
 
   return blog;
 };
+
+exports.deleteBlogByID = async ({ id }) => {
+  const delBlog = await Blog.findByIdAndDelete(id);
+  if (!delBlog) {
+    throw new AppError('User Not Found');
+  }
+  return delBlog;
+};

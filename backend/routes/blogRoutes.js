@@ -2,10 +2,17 @@ const express = require('express');
 const router = express.Router();
 const blogController = require('../controller/blogController');
 const jwtSecurity = require('../jwt/jwtSecurity');
-const { validate } = require('../middleware/validationMiddleware');
-const { blogSchema, updateBlogSchema } = require('../zodSchemas/blogSchema');
+const {
+  validate,
+  validateRole,
+} = require('../middleware/validationMiddleware');
+const {
+  blogSchema,
+  updateBlogSchema,
+  deleteBlogSchema,
+} = require('../zodSchemas/blogSchema');
 const { rateLimitRequests } = require('../middleware/ratelimitingMiddleware');
-const { idOnlySchema } = require('../zodSchemas/authSchema');
+const { isAdminSchema } = require('../zodSchemas/authSchema');
 
 // Protect This Route
 router
@@ -24,7 +31,8 @@ router
   .get(jwtSecurity.protect, validate(blogSchema), blogController.getBlogByID)
   .delete(
     jwtSecurity.protect,
-    validate(idOnlySchema),
+    validateRole(isAdminSchema),
+    validate(deleteBlogSchema),
     blogController.deleteBlogByID
   );
 

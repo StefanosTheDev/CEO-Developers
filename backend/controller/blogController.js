@@ -54,7 +54,13 @@ exports.updateBlogByID = async (req, res, next) => {
 };
 exports.deleteBlogByID = async (req, res, next) => {
   try {
-    const { id } = req.params; // Get the user ID from URL params
+    const blog = await blogService.deleteBlogByID(req.params);
+    res.status(200).json({
+      status: 'success',
+      data: {
+        blog: blog,
+      },
+    });
   } catch (err) {
     next(err);
   }

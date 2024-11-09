@@ -33,7 +33,11 @@ const updateBlogSchema = z
     message: 'At least one of title or content must be provided for an update',
   });
 
+const deleteBlogSchema = z.object({
+  id: z.string({ required_error: 'ID is required for deletion' }),
+});
 module.exports = {
   blogSchema,
   updateBlogSchema,
+  deleteBlogSchema,
 };
