@@ -65,7 +65,19 @@ exports.deleteBlogByID = async (req, res, next) => {
     next(err);
   }
 };
-exports.getBlogByID = async (req, res, next) => {};
+exports.getBlogByID = async (req, res, next) => {
+  try {
+    const blog = await blogService.getBlogByID(req.params);
+    res.status(200).json({
+      status: 'success',
+      data: {
+        blog: blog,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
 exports.blogEngagement = async (req, res, next) => {
   try {
     // for now we can do something like this to test.

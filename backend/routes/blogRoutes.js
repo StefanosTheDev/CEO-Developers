@@ -12,7 +12,7 @@ const {
   deleteBlogSchema,
 } = require('../zodSchemas/blogSchema');
 const { rateLimitRequests } = require('../middleware/ratelimitingMiddleware');
-const { isAdminSchema } = require('../zodSchemas/authSchema');
+const { isAdminSchema, idOnlySchema } = require('../zodSchemas/authSchema');
 
 // Protect This Route
 router
@@ -28,7 +28,7 @@ router
     validate(updateBlogSchema),
     blogController.updateBlogByID
   )
-  .get(jwtSecurity.protect, validate(blogSchema), blogController.getBlogByID)
+  .get(jwtSecurity.protect, validate(idOnlySchema), blogController.getBlogByID)
   .delete(
     jwtSecurity.protect,
     validateRole(isAdminSchema),

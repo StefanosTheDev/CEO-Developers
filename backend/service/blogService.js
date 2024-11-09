@@ -19,6 +19,15 @@ exports.getAllBlogs = async () => {
   }
   return blogs;
 };
+
+exports.getBlogByID = async ({ id }) => {
+  const blog = Blog.findById(id);
+  if (!blog) {
+    throw new AppError('Blog Not Found');
+  }
+  return blog;
+};
+
 exports.blogEngagement = async ({ blogId, userId }) => {
   // 1) Get Blog By ID
   const blog = await Blog.findById(blogId);
