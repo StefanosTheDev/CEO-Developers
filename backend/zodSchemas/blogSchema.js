@@ -36,6 +36,7 @@ const updateBlogSchema = z
 const deleteBlogSchema = z.object({
   id: z.string({ required_error: 'ID is required for deletion' }),
 });
+
 module.exports = {
   blogSchema,
   updateBlogSchema,

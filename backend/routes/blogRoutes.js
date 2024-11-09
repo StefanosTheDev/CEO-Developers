@@ -11,7 +11,6 @@ const {
   updateBlogSchema,
   deleteBlogSchema,
 } = require('../zodSchemas/blogSchema');
-const { rateLimitRequests } = require('../middleware/ratelimitingMiddleware');
 const { isAdminSchema, idOnlySchema } = require('../zodSchemas/authSchema');
 
 // Protect This Route
@@ -36,4 +35,7 @@ router
     blogController.deleteBlogByID
   );
 
+router.route('/like/:id').post(jwtSecurity.protect, blogController.like);
+
+router.route('/upvote/:id').post(jwtSecurity.protect, blogController.upvote);
 module.exports = router;

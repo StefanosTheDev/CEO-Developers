@@ -1,3 +1,4 @@
+const AppError = require('../error/AppError');
 const blogService = require('../service/blogService');
 exports.createBlog = async (req, res, next) => {
   try {
@@ -78,25 +79,47 @@ exports.getBlogByID = async (req, res, next) => {
     next(err);
   }
 };
-exports.blogEngagement = async (req, res, next) => {
+exports.like = async (req, res, next) => {
   try {
-    // for now we can do something like this to test.
-    const { blogId } = req.params;
-    const { comment, upvote, like } = req.body;
-
-    const type = blogService.checkData({ comment, upvote, like });
-    const blog = await blogService.blogEngagement({
-      blogId,
-      admin_id: req.user._id,
-      type,
-    });
+    const user_id = req.user.id;
+    const action = await blogService.likes_or_upvotes(
+      user_id,
+      req.params,
+      'likes'
+    );
 
     res.status(200).json({
-      status: 'success',
+      status: 'liked',
       data: {
-        blogPost: blog,
+        blogPost: action,
       },
     });
+  } catch (err) {
+    next(err);
+  }
+};
+exports.upvote = async (req, res, next) => {
+  try {
+    const user_id = req.user.id;
+    const action = await blogService.likes_or_upvotes(
+      user_id,
+      req.params,
+      'upvotes'
+    );
+
+    res.status(200).json({
+      status: 'upvoted',
+      data: {
+        blogPost: action,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.comment = async (req, res, next) => {
+  try {
   } catch (err) {
     next(err);
   }

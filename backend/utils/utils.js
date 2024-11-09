@@ -47,3 +47,7 @@ exports.isObjectEmpty = (obj) => {
   // If Length is === 0  True Else False
   return Object.keys(obj).length === 0;
 };
+
+exports.checkEngagementType = async ({ likes, comments, upvotes }) => {
+  return likes || comments || upvotes || null; // Of course we can do this because
+};
