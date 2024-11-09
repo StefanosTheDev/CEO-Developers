@@ -13,7 +13,7 @@ exports.createBlog = async ({ title, content, authorId }) => {
 
 exports.getAllBlogs = async () => {
   // Query All Blogs
-  const blogs = await Blog.findOne({}); // get all blogs
+  const blogs = await Blog.find({}); // get all blogs
   if (!blogs) {
     throw new AppError('No blogs exist');
   }
