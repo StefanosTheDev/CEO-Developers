@@ -14,18 +14,11 @@ exports.getAllUsers = async (req, res, next) => {
 };
 exports.updateUserByID = async (req, res, next) => {
   try {
-    const incommingUser = req.body;
-    const incommingUserID = req.params;
-
-    const updateUser = await userService.updateUserByID(
-      incommingUserID,
-      incommingUser
-    );
+    const updateUser = await userService.updateUserByID(req.params, req.body);
     res.status(200).json({
-      status: 'success',
+      status: 'User Updated',
       data: {
         User: updateUser,
-        admin_id: req.user._id,
       },
     });
   } catch (err) {
@@ -36,7 +29,7 @@ exports.deleteUserByID = async (req, res, next) => {
   try {
     const deleteUser = await userService.deleteUserByID(req.params);
     res.status(200).json({
-      status: 'success',
+      status: 'User Deleted',
       data: {
         User: deleteUser,
       },
@@ -49,7 +42,7 @@ exports.getUserByID = async (req, res, next) => {
   try {
     const user = await userService.getUserByID(req.params);
     res.status(200).json({
-      status: 'success',
+      status: 'User Retrieved',
       data: {
         User: user,
       },

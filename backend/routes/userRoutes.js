@@ -4,13 +4,16 @@ const userController = require('../controller/userController');
 const jwtSecurity = require('../jwt/jwtSecurity');
 const { isAdminSchema, updateSchema } = require('../zodSchemas/authSchema');
 const { idOnlySchema } = require('../zodSchemas/authSchema');
-const { validate } = require('../middleware/validationMiddleware');
+const {
+  validate,
+  validateRole,
+} = require('../middleware/validationMiddleware');
 
 router
   .route('/getUsers')
   .get(
     jwtSecurity.protect,
-    validate(isAdminSchema),
+    validateRole(isAdminSchema),
     userController.getAllUsers
   );
 
@@ -24,7 +27,7 @@ router
   .delete(
     jwtSecurity.protect,
     validate(idOnlySchema),
-    userController.getAllUsers
+    userController.deleteUserByID
   )
   .get(jwtSecurity.protect, validate(idOnlySchema), userController.getUserByID);
 

@@ -9,8 +9,8 @@ const authSchema = z
 
     password: z
       .string({ required_error: 'Password Required' })
-      .min(6, { message: 'Username minimum must be 6' })
-      .max(12, { message: 'Username maximum must be 12' }),
+      .min(6, { message: 'Password minimum must be 6' })
+      .max(12, { message: 'Password maximum must be 12' }),
 
     role: z.enum(['admin', 'user']).optional(), // Specify allowed roles here
 

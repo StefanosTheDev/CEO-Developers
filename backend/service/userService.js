@@ -23,7 +23,7 @@ exports.updateUserByID = async ({ id }, { username, email, password }) => {
   });
 
   if (!updateUser) {
-    throw new Error('User not found'); // Handle Blog not found case
+    throw new Error('User not found');
   }
 
   return updateUser;
@@ -36,7 +36,6 @@ exports.deleteUserByID = async ({ id }) => {
   if (!delUser) {
     throw new AppError('User Not Found');
   }
-  console.log(delUser.username);
   return delUser;
 };
 exports.getUserByID = async ({ id }) => {

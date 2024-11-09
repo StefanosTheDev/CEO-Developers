@@ -40,13 +40,11 @@ userSchema.pre('save', async function (next) {
 });
 userSchema.pre('findOneAndUpdate', async function (next) {
   const update = this.getUpdate(); // Retrieves the update object
-
   // Check if 'password' is part of the update
   if (update.password) {
     // Hash the new password before applying the update
     update.password = await bcrypt.hash(update.password, 12);
   }
-
   next();
 });
 

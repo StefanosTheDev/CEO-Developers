@@ -2,10 +2,9 @@ const authService = require('../service/authService');
 
 exports.signup = async (req, res, next) => {
   try {
-    const incommingUser = req.body;
-    const user = await authService.signup(incommingUser);
+    const user = await authService.signup(req.body);
     res.status(201).json({
-      status: 'success',
+      status: 'User Created',
       data: {
         user: user,
       },
@@ -19,7 +18,7 @@ exports.login = async (req, res, next) => {
     const { user, token } = await authService.login(req.body);
     // Respond with the user and token
     res.status(200).json({
-      status: 'success',
+      status: 'Login Successful',
       data: {
         user,
         token,

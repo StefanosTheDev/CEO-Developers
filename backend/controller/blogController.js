@@ -117,10 +117,3 @@ exports.upvote = async (req, res, next) => {
     next(err);
   }
 };
-
-exports.comment = async (req, res, next) => {
-  try {
-  } catch (err) {
-    next(err);
-  }
-};
