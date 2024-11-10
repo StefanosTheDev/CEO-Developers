@@ -10,13 +10,19 @@ const {
   blogSchema,
   updateBlogSchema,
   deleteBlogSchema,
+  commentSchema,
 } = require('../zodSchemas/blogSchema');
 const { isAdminSchema, idOnlySchema } = require('../zodSchemas/authSchema');
 
 // Protect This Route
 router
   .route('/createBlog')
-  .post(jwtSecurity.protect, validate(blogSchema), blogController.createBlog);
+  .post(
+    jwtSecurity.protect,
+    validateRole(isAdminSchema),
+    validate(blogSchema),
+    blogController.createBlog
+  );
 
 router.route('/allBlogs').get(jwtSecurity.protect, blogController.getAllBlogs);
 
@@ -24,6 +30,7 @@ router
   .route('/:id')
   .put(
     jwtSecurity.protect,
+    validateRole(isAdminSchema),
     validate(updateBlogSchema),
     blogController.updateBlogByID
   )
@@ -36,6 +43,8 @@ router
   );
 
 router.route('/like/:id').post(jwtSecurity.protect, blogController.like);
-
 router.route('/upvote/:id').post(jwtSecurity.protect, blogController.upvote);
+router
+  .route('/comment/:id')
+  .post(jwtSecurity.protect, validate(commentSchema), blogController.comment);
 module.exports = router;

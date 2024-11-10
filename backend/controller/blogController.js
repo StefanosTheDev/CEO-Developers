@@ -1,15 +1,9 @@
-const AppError = require('../error/AppError');
 const blogService = require('../service/blogService');
 exports.createBlog = async (req, res, next) => {
   try {
-    const { title, content } = req.body;
-    const newBlogPost = await blogService.createBlog({
-      title,
-      content,
-      authorId: req.user._id,
-    });
+    const newBlogPost = await blogService.createBlog(req.body, req.user.id);
     res.status(201).json({
-      status: 'success',
+      status: 'Blog Created',
       data: {
         newBlog: newBlogPost,
       },
@@ -25,7 +19,6 @@ exports.getAllBlogs = async (req, res, next) => {
       status: 'success',
       data: {
         Blogs: getAllBlogs,
-        admin_id: req.user._id,
       },
     });
   } catch (err) {
@@ -34,19 +27,11 @@ exports.getAllBlogs = async (req, res, next) => {
 };
 exports.updateBlogByID = async (req, res, next) => {
   try {
-    const incommingBlogID = req.params; // Get the user ID from URL params
-    const incommingBlog = req.body; // Destructure the potential update fields
-
-    // Call the service to update the Blog
-    const blog = await blogService.updateBlogByID(
-      incommingBlogID,
-      incommingBlog
-    );
+    const blog = await blogService.updateBlogByID(req.params, req.body);
     res.status(200).json({
-      status: 'delete success',
+      status: 'Update success',
       data: {
         blog: blog,
-        admin_id: req.user._id,
       },
     });
   } catch (err) {
@@ -57,7 +42,7 @@ exports.deleteBlogByID = async (req, res, next) => {
   try {
     const blog = await blogService.deleteBlogByID(req.params);
     res.status(200).json({
-      status: 'success',
+      status: 'Deleted Blog',
       data: {
         blog: blog,
       },
@@ -70,7 +55,7 @@ exports.getBlogByID = async (req, res, next) => {
   try {
     const blog = await blogService.getBlogByID(req.params);
     res.status(200).json({
-      status: 'success',
+      status: 'Retrieved Blog',
       data: {
         blog: blog,
       },
@@ -81,9 +66,8 @@ exports.getBlogByID = async (req, res, next) => {
 };
 exports.like = async (req, res, next) => {
   try {
-    const user_id = req.user.id;
     const action = await blogService.likes_or_upvotes(
-      user_id,
+      req.user.id,
       req.params,
       'likes'
     );
@@ -111,6 +95,20 @@ exports.upvote = async (req, res, next) => {
       status: 'upvoted',
       data: {
         blogPost: action,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+exports.comment = async (req, res, next) => {
+  try {
+    const user_id = req.user.id;
+    const comment = await blogService.comment(req.params, req.body, user_id);
+    res.status(200).json({
+      status: 'commented',
+      data: {
+        commentedPost: comment,
       },
     });
   } catch (err) {

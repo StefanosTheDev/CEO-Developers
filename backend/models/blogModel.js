@@ -11,7 +11,7 @@ const blogPostSchema = new mongoose.Schema({
   content: {
     type: String,
     required: true,
-    min: [1, 'Blog Length Must Be 1'],
+    min: [20, 'Content Length Must Be 20'],
     max: [500, 'Blog Length Max Is 500'],
   },
   createdAt: { type: Date, default: Date.now },
@@ -36,7 +36,7 @@ const blogPostSchema = new mongoose.Schema({
   comments: [
     {
       userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-      content: { type: String, required: true },
+      message: { type: String, required: true },
       commentedAt: { type: Date, default: Date.now },
     },
   ],

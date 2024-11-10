@@ -1,12 +1,9 @@
 const Blog = require('../models/blogModel');
 const AppError = require('../error/AppError');
 const mongoose = require('mongoose');
-exports.createBlog = async ({ title, content, authorId }) => {
-  // Check if Blog exist with same title
+exports.createBlog = async ({ title, content }, authorId) => {
   const existingBlog = await Blog.findOne({ title });
-  if (existingBlog) {
-    throw new AppError('A blog with this title already exists', 400);
-  }
+  if (existingBlog) throw new AppError('Blog Title Already Exists', 400);
   const blog = await Blog.create({ title, content, authorId });
   return blog;
 };
@@ -95,4 +92,15 @@ exports.likes_or_upvotes = async (user_id, { id }, type) => {
 
   // Handle invalid action types
   throw new AppError('Invalid action type', 400);
+};
+exports.comment = async ({ id }, { message }, user_id) => {
+  // Fetch the blog post
+  const blog = await Blog.findById(id);
+  if (!blog) {
+    throw new AppError('Blog Post Not Found', 404);
+  }
+  // Push Comment In The Array
+  blog.comments.push({ userId: user_id, message });
+  await blog.save();
+  return blog;
 };
