@@ -31,4 +31,6 @@ router
   )
   .get(jwtSecurity.protect, validate(idOnlySchema), userController.getUserByID);
 
+// Friends Routes
+router.route('/search/:username').post(userController.searchFriend);
 module.exports = router;

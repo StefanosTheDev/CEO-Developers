@@ -1,6 +1,7 @@
 const AppError = require('../error/AppError');
 const jwtSecurity = require('../jwt/jwtSecurity');
 const User = require('../models/userModel');
+const mongoose = require('mongoose');
 
 exports.getAllUsers = async () => {
   // Query All Blogs
@@ -44,4 +45,26 @@ exports.getUserByID = async ({ id }) => {
     throw new AppError('User not found');
   }
   return user;
+};
+exports.searchFriend = async ({ username }) => {
+  // Leverage Text Indexing and Partial matching. Good Enough Search Feature For Now
+  const results = await User.find({
+    username: { $regex: username, $options: 'i' },
+  });
+  if (results.length === 0) {
+    throw new AppError('No Search Was Found', 400);
+  }
+  return results;
+};
+exports.addFriend = async (user_id, { id }) => {
+  // Validate that user_id is a valid ObjectId
+  if (!mongoose.Types.ObjectId.isValid(user_id)) {
+    throw new AppError('Invalid User ID', 400);
+  }
+  // Confirm Getting The ID
+  const user = await User.findById(id);
+  if (!user) {
+    throw new AppError('User Not Found');
+  }
+  // Ensure No Duplicate
 };

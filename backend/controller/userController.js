@@ -51,3 +51,27 @@ exports.getUserByID = async (req, res, next) => {
     next(err);
   }
 };
+
+// ______________ FRIENDS CONTROLLER FUNCTIONS ______________ //
+exports.addFriend = async (req, res, next) => {
+  // If this works fine then I can insert it into the array.
+  try {
+  } catch (err) {
+    next(err);
+  }
+};
+exports.searchFriend = async (req, res, next) => {
+  try {
+    const search_results = await userService.searchFriend(req.params);
+    res.status(200).json({
+      status: 'Users Found',
+      data: {
+        search_results: search_results,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+exports.deleteFriend = async (req, res, next) => {};
+exports.getFriends = async (req, res, next) => {};

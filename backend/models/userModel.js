@@ -26,6 +26,57 @@ const userSchema = new mongoose.Schema({
     enum: ['user', 'admin'],
     default: 'user',
   },
+  bio: {
+    type: String,
+    default: '',
+  },
+  avatar: {
+    // Unsure How I want to do this
+    type: String,
+    default: '', // Could store a URL to the profile picture
+  },
+  friendRequests: [
+    {
+      from: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+      },
+      status: {
+        type: String,
+        enum: ['pending', 'accepted', 'rejected'],
+        default: 'pending',
+      },
+      requestedAt: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
+  sentFriendRequests: [
+    {
+      to: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+      },
+      status: {
+        type: String,
+        enum: ['pending', 'accepted', 'rejected'],
+        default: 'pending',
+      },
+      sentAt: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
+  friends: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
   created_at: {
     type: Date,
     default: Date.now,
@@ -47,5 +98,5 @@ userSchema.pre('findOneAndUpdate', async function (next) {
   }
   next();
 });
-
+userSchema.index({ username: 'text' });
 module.exports = mongoose.model('User', userSchema);
